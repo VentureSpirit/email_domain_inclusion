@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = EmailDomainInclusion::VERSION
   spec.authors       = ["Andrew Fecheyr"]
   spec.email         = ["andrew@bedesign.be"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
+  spec.summary       = %q{ActiveModel email domain in whitelist validator}
+  spec.description   = %q{ActiveModel validator that checks if a given email has a whitelisted domain}
+  spec.homepage      = "https://github.com/andruby/email_domain_inclusion"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")

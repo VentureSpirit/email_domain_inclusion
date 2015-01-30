@@ -1,6 +1,6 @@
 # EmailDomainInclusion
 
-TODO: Write a gem description
+EmailDomainInclusion is a custom ActiveModel::EachValidator that checks if a given email has a whitelisted domain
 
 ## Installation
 
@@ -20,7 +20,20 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+class Person
+  include ActiveModel::Validations
+  attr_accessor :name, :email
+
+  validates :email, email_domain_inclusion: {allowed_domains: ["hotmail.com", "gmail.com"]}
+end
+```
+
+You may also pass a Proc to allowed_domains
+
+```ruby
+validates :email, email_domain_inclusion: {allowed_domains: ->(person) { AllowedDomains.pluck(:domain) }}
+```
 
 ## Contributing
 

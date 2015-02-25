@@ -6,8 +6,8 @@ require "email_domain_inclusion/version"
 class EmailDomainInclusionValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
     domains = options[:allowed_domains]
-    domains = domains.call(record) if domains.respond_to?(:call)
     domain = Mail::Address.new(value).try(:domain).try(:downcase)
+    domains = domains.call if domains.respond_to?(:call)
     unless domains.include?(domain)
       record.errors[attribute] << options[:message] || "domain_not_in_list"
     end

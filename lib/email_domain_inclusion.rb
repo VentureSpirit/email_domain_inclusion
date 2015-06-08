@@ -14,11 +14,13 @@ class EmailDomainInclusionValidator < ActiveModel::EachValidator
   private
   def valid_subdomain?(value)
     domain = domain_from_email(value)
+    return false unless domain
     allowed_domains.any? { |allowed_domain| domain.end_with? ".#{allowed_domain}" }
   end
 
   def valid_full_domain?(value)
     domain = domain_from_email(value)
+    return false unless domain
     allowed_domains.include?(domain)
   end
 

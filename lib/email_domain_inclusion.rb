@@ -5,15 +5,29 @@ require "email_domain_inclusion/version"
 # +allowed_domains+ can be an array of strings, or a Proc that returns an array of strings
 class EmailDomainInclusionValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
-    domains = options[:allowed_domains]
-    domains = domains.call if domains.respond_to?(:call)
-    domain = domain_from_email(value)
-    unless domains.include?(domain)
+    allow_subdomains = options[:allow_subdomains]
+    unless valid_full_domain?(value) || (allow_subdomains && valid_subdomain?(value))
       record.errors[attribute] << options[:message] || "domain_not_in_list"
     end
   end
 
   private
+  def valid_subdomain?(value)
+    domain = domain_from_email(value)
+    allowed_domains.any? { |allowed_domain| domain.end_with? ".#{allowed_domain}" }
+  end
+
+  def valid_full_domain?(value)
+    domain = domain_from_email(value)
+    allowed_domains.include?(domain)
+  end
+
+  def allowed_domains
+    domains = options[:allowed_domains]
+    domains = domains.call if domains.respond_to?(:call)
+    domains
+  end
+
   def domain_from_email(email)
     Mail::Address.new(email).try(:domain).try(:downcase)
   rescue Mail::Field::ParseError

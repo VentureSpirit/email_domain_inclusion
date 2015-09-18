@@ -25,7 +25,7 @@ class Person
   include ActiveModel::Validations
   attr_accessor :name, :email
 
-  validates :email, email_domain_inclusion: {allowed_domains: ["hotmail.com", "gmail.com"]}
+  validates :email, email_domain_inclusion: {allow_subdomains: true, allowed_domains: ["hotmail.com", "gmail.com"]}
 end
 ```
 
